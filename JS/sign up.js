@@ -50,7 +50,7 @@ function verif_user_name(pseudo)
 function verif_school(school)
 {
 	var erreur=document.getElementById('err_school');
-	var regex=/^[A-Z][a-zA-Z-éèô ]{3,38}$/;
+	var regex=/^[A-Z][a-zA-Z-éèô ]{2,38}$/;
 	if(!regex.test(school.value))
 	{
 		c=false;
@@ -119,12 +119,12 @@ function verif_conf_pass(cmdp)
 		}else{
 			f=false;
 			surligne(cmdp,true);
-			erreur.innerHTML="Please fill in the password field";
+			erreur.innerHTML="Please fill in the password field!";
 		}
 	}else{
 		f=false;
 		surligne(cmdp,true);
-		erreur.innerHTML="letter, number,*_-.&@$éèôâêîï)";
+		erreur.innerHTML="letter, number,*_-.&@$éèôâêîï";
 	}
 	return f;
 }

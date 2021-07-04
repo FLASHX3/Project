@@ -1,7 +1,6 @@
 <?php
-  if(!isset($_SESSION['id'])){
+  if(!isset($_POST['loginUser'])){
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,13 +13,13 @@
   <title>Login</title>
 </head>
 <body>
-  <div class="login-wrapper">
-    <form action="Traitement/verif_log.php" method="post" class="form" onsubmit="return verif_form(this);">
+  <div class="login-wrapper" align="center">
+    <form action="index.php" method="post" class="form" onsubmit="return verif_form(this);">
       <img src="img/avatar.png" alt="erreur lors du chargement de l'image">
       <h2>Login</h2>
       <div class="input-group">
-        <input type="text" name="loginUser" id="loginUser" oninput="verif_log(this);" required>
-        <label for="loginUser">User Name</label>
+        <input type="email" name="loginUser" id="loginUser" oninput="verif_log(this,0);" required>
+        <label for="loginUser">Email</label>
         <span id="err_log"><?php if(isset($_GET['err_log'])){echo $_GET['err_log'];}?></span>
       </div>
       <div class="input-group">
@@ -34,13 +33,14 @@
     </form>
 
     <div id="forgot-pw">
-      <form action="Traitement/verif_mail.php" class="form">
+        <form method="post" action="" class="form" onsubmit="return verif_form_fg(this);" autocomplete="off">
         <br/>
         <a href="#" class="close">&times;</a>
         <h2>Reset Password</h2>
         <div class="input-group">
-          <input type="email" name="email" id="email" required>
+          <input type="email" name="email" id="email" oninput="verif_log(this,1);" required>
           <label for="email">Email</label>
+          <span id="err_forgot_email"><?php if(isset($_GET['err_forgot_email'])){echo $_GET['err_forgot_email'];}?></span>
         </div>
         <input type="submit" value="Submit" class="submit-btn">
       </form>
@@ -50,7 +50,66 @@
 </html>
 
 <?php
-}else{
+}
+if(isset($_POST['loginUser']) AND isset($_POST['loginPassword'])){
+  try
+    {
+      $connexion=new PDO("mysql:host=localhost;dbname=digital;charset=utf8",'root','FLASHX3*');
+      $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $connexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+    }
+  catch(Exception $e)
+    {
+      die('Erreur:'.$e->getMessage());
+    }
+  if (!empty($_POST['loginUser']) AND !empty($_POST['loginPassword']))
+    {
+        $email=strip_tags($_POST['loginUser']);
+        $mdp=strip_tags($_POST['loginPassword']);
 
+        if(!(preg_match("#^[a-zA-Z0-9.-_]{2,}@[a-z0-9.-_]{2,}\.[a-z]{2,4}$#", $email)))
+        {
+            header('Location: index.php?err_log=invalid email');
+        }
+        if(!(preg_match("#^[a-zA-Z0-9.-_*@&$]{8}$#", $mdp)))
+        {
+            header('Location: index.php?err_mdp=invalid password');
+        }
+        $mdp=SHA1($mdp);
+
+        if(!empty($email) AND !empty($mdp))
+        {
+            $requser=$connexion->prepare('SELECT * FROM users WHERE Email=? AND Password=?');
+            $requser->execute(array($email,$mdp));
+
+            $userexist=$requser->rowCount();
+            
+            if ($userexist > 0)
+            {
+                $userinfo=$requser->fetch();
+                $_SESSION['Id']=$userinfo['Id'];
+                $_SESSION['Email']=$userinfo['Email'];
+                $_SESSION['Name']=$userinfo['Name'];
+                $_SESSION['User_name']=$userinfo['User_name'];
+                $_SESSION['Type_user']=$resultat['Type_user'];
+                header("Location: Digital/plate-forme.php");               
+            }else{
+                header("Location: index.php?erreur=These identifiers do not exit!");
+            }
+        }
+    else 
+      {
+        header('location index.php?erreur=please fill in the fields!');
+      }
+    }
+}
+
+if(isset($_GET['email']))
+{
+    $forgot_email=strip_tags($_POST['email']);
+    if(!(preg_match("#^[a-zA-Z0-9.-_]{2,}@[a-z0-9.-_]{2,}\.[a-z]{2,4}$#", $forgot_email)))
+    {
+        header('Location: index.php#forgot-pw?err_forgot_email=invalid email!');
+    }
 }
 ?>
