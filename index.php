@@ -18,7 +18,7 @@
       <img src="img/avatar.png" alt="erreur lors du chargement de l'image">
       <h2>Login</h2>
       <div class="input-group">
-        <input type="email" name="loginUser" id="loginUser" oninput="verif_log(this,0);" required>
+        <input type="email" name="loginUser" id="loginUser" oninput="verif_log(this);" required>
         <label for="loginUser">Email</label>
         <span id="err_log"><?php if(isset($_GET['err_log'])){echo $_GET['err_log'];}?></span>
       </div>
@@ -33,12 +33,12 @@
     </form>
 
     <div id="forgot-pw">
-        <form method="post" action="" class="form" onsubmit="return verif_form_fg(this);" autocomplete="off">
+        <form method="post" action="" class="form">
         <br/>
         <a href="#" class="close">&times;</a>
         <h2>Reset Password</h2>
         <div class="input-group">
-          <input type="email" name="email" id="email" oninput="verif_log(this,1);" required>
+          <input type="email" name="email" id="email" required>
           <label for="email">Email</label>
           <span id="err_forgot_email"><?php if(isset($_GET['err_forgot_email'])){echo $_GET['err_forgot_email'];}?></span>
         </div>
@@ -69,11 +69,11 @@ if(isset($_POST['loginUser']) AND isset($_POST['loginPassword'])){
 
         if(!(preg_match("#^[a-zA-Z0-9.-_]{2,}@[a-z0-9.-_]{2,}\.[a-z]{2,4}$#", $email)))
         {
-            header('Location: index.php?err_log=invalid email');
+            header('Location: index.php?err_log=invalid email!');
         }
         if(!(preg_match("#^[a-zA-Z0-9.-_*@&$]{8}$#", $mdp)))
         {
-            header('Location: index.php?err_mdp=invalid password');
+            header('Location: index.php?err_mdp=invalid password!');
         }
         $mdp=SHA1($mdp);
 

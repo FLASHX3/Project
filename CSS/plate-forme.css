@@ -1,0 +1,10 @@
+@charset "UTF-8";
+*{
+	margin: 0 auto;
+ 	padding: 0;
+ 	box-sizing: border-box;
+}
+#contain{
+	border: 2px solid black;
+	background-size: cover;
+}

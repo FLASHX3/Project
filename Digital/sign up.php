@@ -129,7 +129,7 @@
             $_SESSION['Email']=$userinfo['Email'];
             $_SESSION['School']=$userinfo['School'];
             $_SESSION['Type_user']=$userinfo['Type_user'];
-            header("Location: plate-forme.php");  //redirection vers l'espace user (forum)
+            header("Location: plate-forme.php");  #redirection vers l'espace user (forum)
         }
        
     }

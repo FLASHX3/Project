@@ -12,14 +12,9 @@ function surligne(champ,erreur)
 	}
 }
 
-function verif_log(log,n)
+function verif_log(log)
 {
-	if(n==0){
-		var erreur=document.getElementById('err_log'); break;
-	}else if(n==1){
-		var erreur=document.getElementById('err_forgot_email'); break;
-	}
-
+	var erreur=document.getElementById('err_log');
 	var regex=/^[a-zA-Z0-9.-_]{2,}@[a-z0-9.-_]{2,}\.[a-z]{2,4}$/;
 
 	if(!regex.test(log.value))
@@ -62,17 +57,6 @@ function verif_form(form)
 	{
 		return true;
 	}else{
-		return false;
-	}
-}
-
-function verif_form_fg(form)
-{
-	var email_ok=verif_log(form.email,1);
-	if(email_ok){
-		return true;
-	}
-	else{
 		return false;
 	}
 }
