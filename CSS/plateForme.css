@@ -1,0 +1,170 @@
+@charset "UTF-8";
+*{
+	margin: 0;
+ 	padding: 0;
+ 	box-sizing: border-box;
+}
+body{
+	background-image: url("../img/bg23.jpg");
+	background-attachment: fixed;
+	background-size: cover;
+	background-position: center;
+}
+#container{
+	width: 100%;
+	height: 700px;
+	position: relative;
+}
+header{
+	border-top: none;
+	height: 14%;
+	width: 100%;
+	background-color: grey;
+	font-size: 50px;
+	font-family: "cooper black","Algerian","Wide latin","French Script MT","Harlow Solid","serif";
+	position: fixed;
+	z-index: 2;
+}
+#notif,#para{
+	float: right;
+	margin: 5px;
+	border-radius: 10px;
+	width: 100px;
+	height: 40px;
+}
+#menu img{
+	width: 100%;
+	height: 100%;
+}
+nav{
+	position: relative;
+	top: 14%;
+	display: flex;
+	flex-direction: column;
+	width: 30%;
+	min-width: 30%;
+	color: white;
+	height: 86%;
+	background-color: rgba(255,255,255,0.2);
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	overflow: auto;
+	z-index: 1;
+	position: fixed;
+}
+.ecole{
+	height: 45px;
+	border-bottom: 1px dotted black;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	background-color: transparent;
+	font-weight: bold;
+	font-family: "serif";
+}
+.ecole .pp{
+	width: 18%;
+	height: 100%;
+	border: 1px solid none;
+	border-radius:50%;
+	background-color: black;
+}
+.ecole .pp img{
+	width: 100%;
+	height: 100%;
+	border-radius:50%;
+	font-size: 10px;
+}
+.ecole p{
+	width: 85%;
+	text-align: center;
+	padding: 10px;
+}
+.ecole:hover{
+	background-color: rgba(100,100,250,0.8);
+	color: black;
+}
+#discussion{
+	border: 4px black double;
+	border-radius: 10px;
+	height: 70%;
+	width: 70%;
+	position: absolute;
+	top: 14%;
+	right: 0px;
+	z-index: 1;
+	position: fixed;
+	background-color: rgba(255,255,255,0.6);
+	overflow: auto;
+}
+.autres{
+	border-color: black;
+	background-color: red;
+}
+.moi{
+	border-color: skyblue;
+	background-color: green;
+	position: relative;
+	left: 65%;
+}
+.message{
+	width: 300px;
+	max-width: 35%;
+	padding: 5px;
+	margin: 5px;
+	border-radius: 10px;
+	font-family: "cooper black";
+	border-size: 4px;
+	border-style: double;
+	word-wrap: break-word;
+}
+span{
+	font-size: 10px;
+	font-style: italic;
+	font-family: "serif";
+}
+form{
+	width: 100%;
+}
+#message{
+	width: 70%;
+	border-radius: 10px;
+	padding: 10px;
+}
+[type="submit"]{
+	background-color: green;
+	border-radius: 10px;
+	width: 100px;
+	height: 40px;
+	float: right;
+	position: relative;
+	top: -15px;
+}
+footer{
+	height: 15%;
+	width: 70%;
+	background-color: rgb(12,12,12);
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	color: white;
+	position: fixed;
+	border-radius: 10px;
+	padding: 10px;
+	overflow: auto;
+}
+
+
+@media screen and (max-width: 650px){
+	#notif,#para{
+		position: relative;
+		top: -10px;
+	}
+	nav{
+		width: 25%;
+		font-size: 15px;
+	}
+	.message{
+		width: 150px;
+	}
+}

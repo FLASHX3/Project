@@ -4,13 +4,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="CSS/style.css">
-  <link rel="shortcut icon" type="image/jpg" href="img/icon.ico"/>
-  <script type="text/javascript" src="JS/index.js"></script>
-  <title>Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="CSS/style.css">
+	<link rel="shortcut icon" type="image/jpg" href="img/icon.ico"/>
+	<title>Login</title>
 </head>
 <body>
   <div class="login-wrapper" align="center">
@@ -46,6 +45,7 @@
       </form>
     </div>
   </div>
+  <script type="text/javascript" src="JS/index.js"></script>
 </body>
 </html>
 
@@ -58,7 +58,7 @@ if(isset($_POST['loginUser']) AND isset($_POST['loginPassword'])){
       $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $connexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     }
-  catch(Exception $e)
+  catch(PDOException $e)
     {
       die('Erreur:'.$e->getMessage());
     }
@@ -87,20 +87,20 @@ if(isset($_POST['loginUser']) AND isset($_POST['loginPassword'])){
             if ($userexist > 0)
             {
                 $userinfo=$requser->fetch();
+                session_start();
                 $_SESSION['Id']=$userinfo['Id'];
                 $_SESSION['Email']=$userinfo['Email'];
                 $_SESSION['Name']=$userinfo['Name'];
+                $_SESSION['School']=$userinfo['Shool'];
                 $_SESSION['User_name']=$userinfo['User_name'];
                 $_SESSION['Type_user']=$resultat['Type_user'];
                 header("Location: Digital/plate-forme.php");               
             }else{
                 header("Location: index.php?erreur=These identifiers do not exit!");
             }
-        }
-    else 
-      {
-        header('location index.php?erreur=please fill in the fields!');
-      }
+        }else{
+	    	header('location index.php?erreur=please fill in the fields!');
+	    }
     }
 }
 
