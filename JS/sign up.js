@@ -4,6 +4,7 @@ var c  // verificateur de l'école
 var d  // verificateur d'email
 var e  // verificateur du mot de passe
 var f  // confirmateur de mot de passe
+var g  // verificateur d'age
 
 function surligne(champ,erreur)
 {
@@ -64,6 +65,21 @@ function verif_school(school)
 	return c;
 }
 
+function verif_age(age) {
+	var erreur=document.getElementById('err_age');
+	var regex=/^[0-9]{2}$/;
+	if(!regex.test(age.value)){
+		g=false;
+		surline(age,true);
+		erreur.innerHTML="invalid age!";
+	}else{
+		g=true;
+		surligne(age,false);
+		erreur.innerHTML="";
+	}
+	return g;
+}
+
 function verif_email(mail)
 {
 	var erreur=document.getElementById('err_email');
@@ -90,7 +106,7 @@ function verif_password(mdp)
 	{
 		e=false;
 		surligne(mdp,true);
-		erreur.innerHTML="8 charaters maximum!";
+		erreur.innerHTML="8 charaters";
 	}else{
 		e=true;
 		surligne(mdp,false);
@@ -134,11 +150,12 @@ function verif_form(form)
 	var name_ok=verif_name(form.name);
 	var user_name_ok=verif_user_name(form.username);
 	var school_ok=verif_school(form.school);
+	var age_ok=verif_age(form.age);
 	var email_ok=verif_email(form.email);
 	var mdp_ok=verif_password(form.password);
 	var cmdp_ok=verif_conf_pass(form.confirmpassword);
 
-	if(name_ok && user_name_ok && email_ok && mdp_ok && cmdp_ok && school_ok)
+	if(name_ok && user_name_ok && email_ok && mdp_ok && cmdp_ok && school_ok && age_ok)
 	{
 		return true;
 	}else{

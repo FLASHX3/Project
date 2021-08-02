@@ -10,8 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="../CSS/style.css">
-  <link rel="shortcut icon" type="image/jpg" href="../img/icon.ico"/>
-  <script type="text/javascript" src="../JS/sign up.js"></script>
+  <link rel="shortcut icon" type="image/jpg" href="../img/Logo_RSA.ico"/>
   <title>Sign up</title>
 </head>
 <body>
@@ -34,6 +33,11 @@
         <span id="err_school"><?php if(isset($_GET['err_school'])){echo $_GET['err_school'];}?></span>
       </div>
       <div class="input-group">
+        <input type="number" name="age" id="age" oninput="verif_age(this);" required>
+        <label for="age">Age</label>
+        <span id="err_age"><?php if(isset($_GET['err_age'])){echo $_GET['err_age'];}?></span>
+      </div>
+      <div class="input-group">
         <input type="email" name="email" id="email" oninput="verif_email(this);" required>
         <label for="email">Email</label>
         <span id="err_email"><?php if(isset($_GET['err_email'])){echo $_GET['err_email'];}?></span>
@@ -51,10 +55,11 @@
       <div class="buttton">
         <input type="submit" value="Submit" class="submit-btn">
         <input type="reset" value="Reset" class="reset-btn"><br>
-        <a href="../index.php" id="sign_in">sign in</a>
+        <a href="acc.php" id="sign_in">sign in</a>
       </div>
     </form>
   </div>
+  <script type="text/javascript" src="../JS/sign up.js"></script>
 </body>
 </html>
 
@@ -68,6 +73,7 @@
         $email=strip_tags($_POST['email']);
         $mdp=strip_tags($_POST['password']);
         $cmdp=strip_tags($_POST['confirmpassword']);
+        $age=strip_tags($_POST['age']);
 
         #on verifie la structure des entrées si elles les regex
         if(!(preg_match("#^[A-Z][a-z-ôâï ]{1,24}$#", $name))){
@@ -78,6 +84,9 @@
         }
         if(!(preg_match("#^[A-Z][a-zA-Z-éèô ]{2,38}$#", $school))){
             header('Location: sign up.php?err_school=invalid school! capital letter in first letter');
+        }
+        if(!(preg_match("#^[0-9]{2}$#", $age))){
+            header('Location: sign up.php?err_age=invalid age!');
         }
         if(!(preg_match("#^[a-zA-Z0-9.-_]{1,}@[a-z0-9.-_]{2,}\.[a-z]{2,4}$#", $email))){
             header('Location: sign up.php?err_email=invalid email! 8 charaters maximum!');
@@ -114,8 +123,8 @@
             header('Location: sign up.php?err_email=This email adresse is using');
         }else{
             $reqtest->closeCursor();
-            $insertion=$connexion->prepare("INSERT INTO users VALUES('',?,?,?,?,?,'user')"); #on l'inscrit dans la bd
-            $insertion->execute(array($name,$username,$school,$email,$mdp));
+            $insertion=$connexion->prepare("INSERT INTO users VALUES('',?,?,?,?,?,?,'user')"); #on l'inscrit dans la bd
+            $insertion->execute(array($name,$username,$school,$age,$email,$mdp));
             $insertion->closeCursor();
 
             #on recupère les infos de l'utilisateur qui vient de s'inscrire
@@ -124,11 +133,14 @@
             $userinfo=$requete->fetch();
 
             session_start();
+            $_SESSION['Id']=$userinfo['Id'];
             $_SESSION['Name']=$userinfo['Name'];
             $_SESSION['User_name']=$userinfo['User_name'];
             $_SESSION['Email']=$userinfo['Email'];
             $_SESSION['School']=$userinfo['School'];
+            $_SESSION['Age']=$userinfo['Age'];
             $_SESSION['Type_user']=$userinfo['Type_user'];
+            $_SESSION['Age']=$userinfo['Age'];
             header("Location: plate-forme.php");  #redirection vers l'espace user (forum)
         }
        
