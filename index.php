@@ -1,7 +1,11 @@
+<?php 
+    if(!isset($_SESSION['Id'])){
+?>
+
 <html>
     <head>
         <link rel="stylesheet" media="screen" href="CSS/acc.css"/>
-        <link rel="shortcut icon" type="image/jpg" href="img/Logo_RSA.ico">
+        <link rel="shortcut icon" type="image/ico" href="img/Logo_RSA.ico">
         <title>RSA</title>
     </head>
     <body>
@@ -11,7 +15,6 @@
                 <ul>
                     <li><a href="Digital/acc.php">Connexion</a></li>
                     <li><a href="Digital/sign up.php">Inscription</a></li>
-                    
                 </ul>
             </nav>
         </header>
@@ -20,7 +23,10 @@
             This is a platform bringing together several higher and secondary schools for educational purposes.
             </h1>
         </div>
-        
     </body>
 </html>
-
+<?php
+    }else{
+        echo 'Erreur de connexion';
+    }
+?>

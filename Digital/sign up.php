@@ -66,7 +66,7 @@
 <?php
     }
     if(isset($_POST['name']) AND isset($_POST['username']) AND isset($_POST['school']) AND isset($_POST['email']) AND isset($_POST['password']) AND isset($_POST['confirmpassword']))
-    {# on supprime les balises
+      {# on supprime les balises
         $name=strip_tags($_POST['name']);
         $username=strip_tags($_POST['username']);
         $school=strip_tags($_POST['school']);
@@ -75,7 +75,7 @@
         $cmdp=strip_tags($_POST['confirmpassword']);
         $age=strip_tags($_POST['age']);
 
-        #on verifie la structure des entrées si elles les regex
+        #on verifie la structure des entrées si elles vérifent les regex
         if(!(preg_match("#^[A-Z][a-z-ôâï ]{1,24}$#", $name))){
             header('Location: sign up.php?err_name=invalid name! capital letter in first letter');
         }
@@ -122,27 +122,29 @@
         if (!empty($resultat)){  #Si ces identifiants sont déja utilisés on renvoie une erreur
             header('Location: sign up.php?err_email=This email adresse is using');
         }else{
-            $reqtest->closeCursor();
-            $insertion=$connexion->prepare("INSERT INTO users VALUES('',?,?,?,?,?,?,'user')"); #on l'inscrit dans la bd
-            $insertion->execute(array($name,$username,$school,$age,$email,$mdp));
-            $insertion->closeCursor();
+          $reqtest->closeCursor();
+          $insertion=$connexion->prepare("INSERT INTO users VALUES('',?,?,?,?,?,?,'user')"); #on l'inscrit dans la bd
+          $insertion->execute(array($name,$username,$school,$age,$email,$mdp));
+          $insertion->closeCursor();
 
-            #on recupère les infos de l'utilisateur qui vient de s'inscrire
-            $requete=$connexion->prepare("SELECT * FROM users WHERE Email=?");
-            $requete->execute(array($email));
-            $userinfo=$requete->fetch();
+          echo "<script type='text/javascript'>alert('$name viens de s'inscrire');</script>";
 
-            session_start();
-            $_SESSION['Id']=$userinfo['Id'];
-            $_SESSION['Name']=$userinfo['Name'];
-            $_SESSION['User_name']=$userinfo['User_name'];
-            $_SESSION['Email']=$userinfo['Email'];
-            $_SESSION['School']=$userinfo['School'];
-            $_SESSION['Age']=$userinfo['Age'];
-            $_SESSION['Type_user']=$userinfo['Type_user'];
-            $_SESSION['Age']=$userinfo['Age'];
-            header("Location: plate-forme.php");  #redirection vers l'espace user (forum)
-        }
-       
+          #on recupère les infos de l'utilisateur qui vient de s'inscrire
+          $requete=$connexion->prepare("SELECT * FROM users WHERE Email=?");
+          $requete->execute(array($email));
+          $userinfo=$requete->fetch();
+
+          session_start();
+          $_SESSION['Id']=$userinfo['Id'];
+          $_SESSION['Name']=$userinfo['Name'];
+          $_SESSION['User_name']=$userinfo['User_name'];
+          $_SESSION['Email']=$userinfo['Email'];
+          $_SESSION['School']=$userinfo['School'];
+          $_SESSION['Age']=$userinfo['Age'];
+          $_SESSION['Type_user']=$userinfo['Type_user'];
+          $_SESSION['Age']=$userinfo['Age'];
+          $requete->closeCursor();
+          header("Location: plate-forme.php");  #redirection vers l'espace user (forum)
+        }  
     }
 ?>

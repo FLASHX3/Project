@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<link rel="stylesheet" href="../CSS/style.css">
-	<link rel="shortcut icon" type="image/jpg" href="../img/Logo_RSA.ico"/>
+	<link rel="shortcut icon" type="image/ico" href="../img/Logo_RSA.ico"/>
 	<title>Login</title>
 </head>
 <body>
@@ -47,7 +47,7 @@
       </form>
     </div>
   </div>
-  <script type="text/javascript" src="JS/index.js"></script>
+  <script type="text/javascript" src="../JS/index.js"></script>
 </body>
 </html>
 
@@ -96,7 +96,7 @@ if(isset($_POST['loginUser']) AND isset($_POST['loginPassword'])){
                 $_SESSION['School']=$userinfo['School'];
                 $_SESSION['Age']=$userinfo['Age'];
                 $_SESSION['User_name']=$userinfo['User_name'];
-                $_SESSION['Type_user']=$resultat['Type_user'];
+                $_SESSION['Type_user']=$userinfo['Type_user'];
                 $requser->closeCursor();
                 header("Location: plate-forme.php");               
             }else{
