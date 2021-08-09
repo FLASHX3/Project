@@ -8,7 +8,7 @@
 
 		session_unset();
 		session_destroy();
-		header('Location: ../index.php');
+		header('Location: acc.php');
 	}
 	catch(PDOException $e){
 		echo 'Erreur '.$e->getMessage();

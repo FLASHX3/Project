@@ -1,0 +1,6 @@
+Appels vidéo; partage des médias.
+Ecoles définies au préalable avec possibilité de création d'une nouvelle école.
+Deux espaces définis:espace étudiant et espace professeur.
+Bases de données: Walter; Ghislain ; Stephane
+Squelette de base: Charlotte
+Analyse du marché par Landry

@@ -25,7 +25,7 @@
  	<meta http-equiv="X-UA-Compatible" content="ie=edge">
  	<link rel="stylesheet" href="../CSS/plateForme.css">
  	<link rel="shortcut icon" type="image/ico" href="../img/Logo_RSA.ico"/>
- 	<script type="text/javascript" src="../JS/index.js"></script>
+ 	<script type='text/javascript' src="../JS/plateforme.js"></script>
 	<title>RSA</title>
 </head>
 <body>
@@ -61,13 +61,6 @@
 		</header>
 
 		<nav>
-			<!--
-			<div class="ecole">
-				<a href="plate-forme.php?school=<?php echo $resultat['school']?>">
-					<div class="pp"><img src="../img/avatar.png" alt="erreur"></div><p>ecole1</p>
-				</a>
-			</div>
-			-->
 			<?php
 				$requete=$bdd->prepare("SELECT * FROM établissements WHERE Cursus=?");
 				$requete->execute(array($_SESSION['Cursus']));
@@ -90,23 +83,6 @@
 		</nav>
 
 		<div id="discussion">
-			<!--
-				<div class="me">
-					<div class="message moi">
-						<p class="auteur">Flash</p>
-						<p>C'est ce samedi 31/08/2021</p>
-						<span>05h03</span>
-					</div>
-				</div>
-				<div>
-					<div class="message autres">
-						<p class="auteur">Batonga</p>
-						<p>D'accord! Et quelle heure s'il vous plait?</p>
-						<span>05h10</span>
-					</div>
-				</div>
-			-->
-
 			<?php
 				$message=$bdd->prepare("SELECT Id,Auteur,Contenu,DATE_FORMAT(Date, '%d/%m/%Y %Hh%imin%ss') AS Heure FROM message WHERE Ecole_visé=?");
 				$message->execute(array($_SESSION['ecole_visé']));
@@ -117,14 +93,14 @@
 					<div <?php if($resultat['Auteur']==$_SESSION['User_name']){echo 'class="me"';} ?> >
 						<div class="message <?php if($resultat['Auteur']==$_SESSION['User_name']){echo 'moi';}else{echo 'autres';} ?> ">
 							<p class="auteur"><?php echo $resultat['Auteur']; ?></p>
-							<p><?php echo $resultat['Contenu']; ?></p>
+							<p>
+								<?php echo $resultat['Contenu']; ?>
+							</p>
 							<span><?php echo $resultat['Heure']; ?></span>
 						</div>
 					</div>
 			<?php
 					}
-				}else if($nbMessage==0){
-					echo '0 message trouvé';
 				}else{
 					echo 'Erreur '.$nbMessage.' trouvés';
 				}
@@ -134,16 +110,23 @@
 		<footer>
 			<form method="post" action="message.php?school=<?php echo $_SESSION['ecole_visé']; ?>" enctype="multipart/form-data" onsubmit="return verif(this);">
 				<div class="ele">
-					<textarea name="message" id="message" placeholder="envoyer un message*" oninput="active();"></textarea>
+					<textarea name="message" id="message" placeholder="envoyer un message*"></textarea>
 					<button type="submit" id="Envoyer"></button>
 				</div>
 				<?php if(!isset($_GET['school']) OR $_GET['school']==$_SESSION['School']){?>
 				<div class="ele">
-					<input type="file" name="file" id="file" title="ajouter un fichier" oninput="verif_doc(this);">
+					<input type="file" name="file" id="file" title="ajouter un fichier" onchange="verif_doc(this);">
 				</div>
 				<?php  }else if(isset($_GET['school']) AND $_GET['school']!=$_SESSION['School']){} ?>
 			</form>
 		</footer>
+		<?php
+			if(isset($_GET['err_file'])){
+		?>
+				<script type='text/javascript'>alert("<?php echo $_GET['err_file']; ?>");</script>
+		<?php
+			}
+		?>
 	</div>
 </body>
 </html>

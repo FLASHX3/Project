@@ -16,6 +16,7 @@
   	<header><marquee id="marquee"><h1>Bienvenue Sur RSA</h1></marquee><img src="../img/Logo_RSA.png"></header>
 
     <form action="acc.php" method="post" class="form" onsubmit="return verif_form(this);">
+      <a href="../index.php" class="close" title="fermer">&times;</a>
       <img src="../img/avatar.png" alt="erreur lors du chargement de l'image">
       <h2>Login</h2>
       <div class="input-group">

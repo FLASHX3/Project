@@ -1,0 +1,1 @@
+git remote add OC git clone //pour pointer https://github.com/OpenClassrooms-Student-Center/ProjetOpenSource.git //pour cloner

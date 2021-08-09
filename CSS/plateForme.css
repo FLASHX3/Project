@@ -75,7 +75,7 @@ header{
 	outline: none;
 	transition: .3s ease-out;
 }
-#notif:hover,#para:hover,#deconnect:hover,#ajout:hover,#delete:hover,[type="submit"]:hover{
+#notif:hover,#para:hover,#deconnect:hover,#ajout:hover,#delete:hover,[type="submit"]:hover,[type="file"]:hover{
 	cursor: pointer;
 	width: 45px;
 	height: 45px;
@@ -209,6 +209,7 @@ span{
 	background-image: url('../img/partageFile.png');
 	background-size: cover;
 	border-radius: 50%;
+	transition: .3s ease-out;
 }
 [type="submit"]{
 	background-color: green;
@@ -220,7 +221,7 @@ span{
 	border-radius: 20px;
 	float: right;
 	outline: none;
-	visibility: hidden;
+	transition: .3s ease-out;
 }
 footer{
 	height: 15%;

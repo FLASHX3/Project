@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Dim 08 Août 2021 à 03:07
+-- Généré le :  Lun 09 Août 2021 à 03:34
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `message` (
   `Etablissement` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `Ecole_visé` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=57 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=67 ;
 
 --
 -- Contenu de la table `message`
@@ -86,7 +86,17 @@ INSERT INTO `message` (`Id`, `Auteur`, `Contenu`, `Date`, `Etablissement`, `Ecol
 (43, 'NKG', 'Tu es sure que tu vas bien?', '2021-08-07 05:11:52', 'Saint-Jérôme', 'IUT'),
 (54, 'Joyce', 'Non les compos n''ont pas encore commencés', '2021-08-07 14:55:50', 'IUG', 'IUG'),
 (55, 'Joyce', 'Mince vous bavardez hein', '2021-08-07 14:56:09', 'IUG', 'IUG'),
-(56, 'Titos', 'Je te dis', '2021-08-07 20:27:35', 'Saint-Jérôme', 'Saint-Jérôme');
+(56, 'Titos', 'Je te dis', '2021-08-07 20:27:35', 'Saint-Jérôme', 'Saint-Jérôme'),
+(57, 'Flash', 'okay j''ai compris!', '2021-08-08 19:32:12', 'Saint-Jérôme', 'Saint-Jérôme'),
+(58, 'Flash', 'mise à jour', '2021-08-08 20:31:35', 'Saint-Jérôme', 'Saint-Jérôme'),
+(59, 'Flash', 'ca marche', '2021-08-08 20:31:48', 'Saint-Jérôme', 'Saint-Jérôme'),
+(60, 'Flash', 'depot local.txt', '2021-08-08 20:33:41', 'Saint-Jérôme', 'Saint-Jérôme'),
+(61, 'Flash', 'df', '2021-08-08 20:34:10', 'Saint-Jérôme', 'Saint-Jérôme'),
+(62, 'Flash', 'tpe AFE LEA AXELLE SJP2.docx', '2021-08-08 20:34:11', 'Saint-Jérôme', 'Saint-Jérôme'),
+(63, 'Flash', 'test msg', '2021-08-09 02:05:56', 'Saint-Jérôme', 'Saint-Jérôme'),
+(64, 'Flash', 'rapport.txt', '2021-08-09 02:06:28', 'Saint-Jérôme', 'Saint-Jérôme'),
+(65, 'Flash', 'Classeur1.xlsx<br>regarder ceci les amis', '2021-08-09 02:07:12', 'Saint-Jérôme', 'Saint-Jérôme'),
+(66, 'Joyce', 'RAPPORT DE STAGE.docx', '2021-08-09 02:12:02', 'IUG', 'IUG');
 
 -- --------------------------------------------------------
 
