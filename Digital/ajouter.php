@@ -2,11 +2,10 @@
 	session_start();
 	if(isset($_SESSION['Id']) AND $_SESSION['Id']!=0){
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
-	<title><?php if($_GET['a']){echo "Ajouter une école";}else{echo "Supprimer une école";} ?></title>
+	<title><?php if($_GET['a']==true){echo "Ajouter une école";}else{echo "Supprimer une école";} ?></title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
  	<meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -19,8 +18,8 @@
 	if($_SESSION['Type_user']="admin" AND $_GET['a']=="true"){
 ?>
 		<form id="add" method="post" action="ajouter.php?a=true" enctype="multipart/form-data" onsubmit="return verif(this);">
-			<h1>Ajouter une école<img src="../img/ecole.jpg" id="icone" alt="erreur"></h1>
-			<a href="plate-forme.php" class="close" title="fermer">&times;</a>
+			<h1 id="entete">Ajouter une école<img src="../img/ecole.jpg" id="icone" alt="erreur"></h1>
+			<a href="plate-forme.php#derniermessage" class="close" title="fermer">&times;</a>
 			<input type="text" name="établissement" id="établissement" placeholder="Nom de l'établissement" required oninput="verif_ecole(this);"><span id="err_name"><?php if(isset($_GET['err_name'])){echo $_GET['err_name'];} ?></span>
 			<fieldset>
 				<legend>Type d'établissement</legend>
@@ -29,20 +28,27 @@
 				<input type="radio" name="type_établissement" value="Université" id="université" checked><label for="université">Université</label>
 			</fieldset>
 			<div class="logo">
-				<label for="logo">Logo :</label><input type="file" name="logo" id="logo" oninput="verif_logo(this);">
+				<label for="logo">Logo :</label><input type="file" name="logo" id="logo" required oninput="verif_logo(this);">
 			</div>
 			<div>
-				<button type="submit" title="ajouter"></button>
+				<button type="submit" id="ajouter" title="ajouter"></button>
 				<span id="err_logo"><?php if(isset($_GET['err_logo'])){echo $_GET['err_logo'];}?></span>
 			</div>
 		</form>
 	<?php 
-		if(isset($_POST['établissement']) AND isset($_POST['type_établissement']) AND isset($_FILES['logo']) AND $_FILES['logo']['error']==0){
+		if(isset($_POST['établissement']) AND isset($_POST['type_établissement']) AND isset($_FILES['logo']) AND !$_FILES['logo']['error']){
+
+			$verifimage=getimagesize($_FILES['logo']['tmp_name']);
+
+			if(!($verifimage && $verifimage[2]<4)){
+				unlink($_FILES['logo']['tmp_name']);
+				header('location : ajouter.php?a=true&err_logo=ce fichier ne contient pas d\'image');
+			}
 
 			$name=strip_tags($_POST['établissement']);
 
-			if(!preg_match("#^[A-Z][a-zA-Z-._ éèôç']{1,24}$#",$name)){
-				header('Location: ajouter.php?a=true&err_name=Capital letter in first letter!');
+			if(!preg_match("#^[A-Z][a-zA-Z-éèêôçï' ]{2,38}$#i",$name)){
+				header('Location: ajouter.php?a=true&err_name=Invalid name of school!');
 			}
 
 			try{
@@ -66,34 +72,36 @@
 
 						if(in_array($extensionn_fichier, $extension_autorisees)){
 							if(move_uploaded_file($_FILES['logo']['tmp_name'], '../img/ecole/'.$name.'.png')){
+
+								switch ($_POST['type_établissement']):
+									case 'Collège':
+									case 'Lycée':
+										$cursus="Secondary";
+										break;	
+									case 'Université':
+										$cursus="University";
+										break;		
+									default:
+										header('location: ajouter.php?a=true&err_logo=Type of school is not defined');
+										break;
+								endswitch;
+
+								$req=$bdd->prepare("INSERT INTO établissements VALUES ('',?,?,?)");
+								$req->execute(array($name,$_POST['type_établissement'],$cursus));
+								$req->closeCursor();
+
+								echo "<script type='text/javascript'>alert('$name has been added!');</script>";
+
 								echo "<script type='text/javascript'>alert('This file had been uploaded!');</script>";
 							}else{
 								echo "<script type='text/javascript'>alert('Error of uploaded!');</script>";
 							}
 						}else{
-							header('location: ajouter.php?a=true&err_logo=Only jpg, jpeg and png!');
+							header('location: ajouter.php?a=true&err_logo=Only jpg,jpeg and png!');
 						}
 					}else{
 						header('location: ajouter.php?a=true&err_logo=This file is too weighty!');
-					}
-
-					switch ($_POST['type_établissement']) {
-						case 'Collège':
-							$cursus="Secondaire";
-							break;
-						case 'Lycée':
-							$cursus="Secondaire";
-							break;				
-						default:
-							$cursus="Universitaire";
-							break;
-					}
-
-					$req=$bdd->prepare("INSERT INTO établissements VALUES ('',?,?,?)");
-					$req->execute(array($name,$_POST['type_établissement'],$cursus));
-					$req->closeCursor();
-
-					echo "<script type='text/javascript'>alert('$name has been added!');</script>";
+					}	
 				}
 			}
 			catch(PDOException $e){
@@ -104,27 +112,44 @@
 	<?php
 		}else if($_SESSION['Type_user']="admin" AND $_GET['a']=="false"){
 	?>
-			<form id="delete">
-				<div class="element">
-					<input type="checkbox" name="ecole" id="Saint-Jérôme"><label for="Saint-Jérôme"><img src="../img/ecole/Saint-Jérôme.png"></label>
-				</div>
-				<div class="element">
-					<input type="checkbox" name="ecole" id="IUG"><label for="IUG"><img src="../img/ecole/IUG.png"></label>
-				</div>
-				<div class="element">
-					<input type="checkbox" name="ecole" id="IUC"><label for="IUC"><img src="../img/ecole/IUC.png"></label>
-				</div>
-				<div class="element">
-					<input type="checkbox" name="ecole" id="IUL"><label for="IUL"><img src="../img/ecole/IUL.png"></label>
-				</div>
-				<div class="element">
-					<input type="checkbox" name="ecole" id="Conquete"><label for="Conquete"><img src="../img/ecole/Conquete.png"></label>
-				</div>
-				<div class="element">
-					<input type="checkbox" name="ecole" id="IUGET"><label for="IUGET"><img src="../img/ecole/IUGET.png"></label>
-				</div>
+			<h1 id="titre"><a href="plate-forme.php#derniermessage" class="closed" title="fermer">&times;</a>Supprimer une école<img src="../img/ecole.jpg" id="icone" alt="erreur"></h1>
+			<form id="delete" method="post" action="supprimer.php" name="form" onsubmit="return verif_choix();">
+				<?php if(isset($_GET['delete']) AND $_GET['delete']=="succes"){ ?>
+					<script type="text/javascript">alert("Succes Delete!");</script>
+				<?php } ?>
+
+				<?php
+					try{
+						$bdd= new PDO("mysql:host=localhost;dbname=digital;charset=utf8",'root','FLASHX3*');
+						$bdd->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+						$bdd->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
+
+						$ecole=$bdd->prepare("SELECT Nom_établissement FROM établissements");
+						$ecole->execute();
+						$nb_ecole=$ecole->rowCount();
+						if($nb_ecole>0){
+							while($resultat=$ecole->fetch()){
+				?>
+							<div class="element">
+								<input type="checkbox" name="ecole[]" value="<?php echo $resultat['Nom_établissement'];?>" id="<?php echo $resultat['Nom_établissement'];?>"/>
+								<label for="<?php echo $resultat['Nom_établissement'];?>">
+									<img src="../img/ecole/<?php echo $resultat['Nom_établissement'];?>.png" alt="<?php echo $resultat['Nom_établissement'];?>"/>
+									<p class="name"><?php echo $resultat['Nom_établissement'];?></p>
+								</label>
+							</div>
+				<?php
+							}
+							$ecole->closeCursor();
+						}else{
+							echo 'AUCUNE ECOLE N\'EST INSCRITE';
+						}
+					}
+					catch(PDOException $e){
+						die('ERREUR: '.$e->getMessage());
+					}
+				?>
 				<div>
-					<button type="submit" id="supprimer"></button>
+					<button type="submit" id="supprimer" title="Supprimer"></button>
 				</div>
 			</form>
 	<?php

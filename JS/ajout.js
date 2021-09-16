@@ -11,15 +11,20 @@ function surligne(champ,erreur){
 
 function verif_ecole(ecole) {
 	var erreur=document.getElementById('err_name');
-	regex=/^[A-Z][a-zA-Z-._ éèôç']{1,24}$/;
-	if(!regex.test(ecole.value)){
-		a=false;
-		surligne(ecole,true);
-		erreur.innerHTML="Capital letter in first letter!";
-	}else{
-		a=true;
+	regex=/^[A-Z][a-zA-Z-éèêôçï' ]{2,38}$/i;
+	if(ecole.value==""){
 		surligne(ecole,false);
 		erreur.innerHTML="";
+	}else{
+		if(!regex.test(ecole.value)){
+			a=false;
+			surligne(ecole,true);
+			erreur.innerHTML="Invalid name of school!";
+		}else{
+			a=true;
+			surligne(ecole,false);
+			erreur.innerHTML="";
+		}
 	}
 	return a;
 }
@@ -59,4 +64,17 @@ function verif(form) {
 	}else{
 		return false;
 	}
+}
+
+function verif_choix(){
+	var a=false;
+	var choix=document.form.ecole[];
+	for(var i in choix){
+		if(choix.checked==true){
+			a=true;
+		}else{
+			a=false;
+		}
+	}
+	return a;
 }

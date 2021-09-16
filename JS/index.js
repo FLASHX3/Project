@@ -16,17 +16,21 @@ function verif_log(log)
 {
 	var erreur=document.getElementById('err_log');
 	var regex=/^[a-zA-Z0-9.-_]{2,}@[a-z0-9.-_]{2,}\.[a-z]{2,4}$/;
-
-	if(!regex.test(log.value))
-	{
-		a=false;
-		surligne(log,true);
-		erreur.innerHTML="invalid email!";
-	}else{
+	if(log.value==""){
 		surligne(log,false);
-		a=true;
 		erreur.innerHTML="";
-	}
+	}else{
+		if(!regex.test(log.value))
+		{
+			a=false;
+			surligne(log,true);
+			erreur.innerHTML="invalid email!";
+		}else{
+			surligne(log,false);
+			a=true;
+			erreur.innerHTML="";
+		}
+	}	
 	return a;
 }
 
@@ -34,16 +38,20 @@ function verif_mdp(mdp)
 {
 	var erreur=document.getElementById('err_mdp');
 	var regex=/^[a-zA-Z0-9.-_*@&$]{8}$/;
-
-	if(!regex.test(mdp.value))
-	{
-		b=false;
-		surligne(mdp,true);
-		erreur.innerHTML="8 charaters maximum!";
-	}else{
-		b=true;
+	if(mdp.value==""){
 		surligne(mdp,false);
 		erreur.innerHTML="";
+	}else{
+		if(!regex.test(mdp.value))
+		{
+			b=false;
+			surligne(mdp,true);
+			erreur.innerHTML="8 charaters!";
+		}else{
+			b=true;
+			surligne(mdp,false);
+			erreur.innerHTML="";
+		}
 	}
 	return b;
 }

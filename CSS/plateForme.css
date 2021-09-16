@@ -24,6 +24,7 @@ header{
 	padding-left: 5px;
 	position: fixed;
 	z-index: 2;
+	padding-bottom: 3px;
 }
 #logo{
 	display: inline-flex;
@@ -35,20 +36,23 @@ header{
 	width: 100%;
 	height: 100%;
 }
-#titre{
+.titre{
 	position: relative;
-	top: -15px;
-	left: 50%;
-	font-family: "serif";
-	font-size: 20px;
-	font-weight: bold;
+	top: -25%;
+	display: flex;
+}
+#titre{
+	display: inline-block;
+	margin: auto;
+	background-color: rgba(139,124,152,1);
 	border: 2px outset;
-	width: 200px;
 	border-top-right-radius: 10px;
 	border-top-left-radius: 10px;
+	font-weight: bold;
 	text-align: center;
-	background-color: rgba(139,124,152,1);
-	text-overflow: hidden;
+	font-family: "serif";
+	font-size: 20px;
+	padding: 0 3px;
 }
 #ajout{
 	background-image: url('../img/ajouter.jpg');
@@ -105,7 +109,7 @@ nav a{
 	text-decoration: none;
 	color: white;
 }
-nav a:visited{
+a:visited{
 	text-decoration: none;
 }
 .ecole{
@@ -145,6 +149,15 @@ nav a:visited{
 	background-color: rgba(100,100,250,0.8);
 	color: black;
 }
+.notification{
+	height: 13px;
+	display: inline-block;
+	background-color: blue;
+	justify-content: center;
+	border-radius: 50%;
+	text-align: center;
+	padding: 1px;
+}
 #discussion{
 	border: 1px black solid;
 	border-radius: 10px;
@@ -161,6 +174,15 @@ nav a:visited{
 	background-size: cover;
 	background-position: center;
 	overflow: auto;
+}
+.nan{
+	border: 2px solid black;
+	margin: auto;
+	border-radius: 10px;
+	display: flex;
+	justify-content: center;
+	width: 60%;
+	background-color: rgba(139,124,152,0.9);
 }
 .message{
 	display: inline-block;
@@ -193,7 +215,7 @@ span{
 	padding: 5px;
 }
 #message{
-	width: 70%;
+	width: 75%;
 	height: 100%;
 	border-radius: 10px;
 	padding: 10px;
@@ -222,11 +244,12 @@ span{
 	float: right;
 	outline: none;
 	transition: .3s ease-out;
+	visibility: hidden;
 }
 footer{
 	height: 15%;
-	width: 70%;
-	background-color: rgb(12,12,12);
+	width: 70%; 
+	background-color: rgba(68,12,218,0.9);
 	position: absolute;
 	bottom: 0;
 	right: 0;
@@ -245,8 +268,33 @@ form{
 	font-style: italic;
 	color: whitesmoke;
 }
-
-
+#para-zone{
+	position: fixed;
+	right: 0;
+	top: 8%;
+	z-index: 3;
+	padding: 0 3px;
+	background-color: rgba(139,124,152,1);
+	border: 2px solid white;
+	border-radius: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	visibility: hidden;
+	height: 120px;
+}
+#para-zone p:hover{
+	background-color: rgba(100,100,250,0.8);
+}
+#para-zone p a{
+	text-decoration: none;
+	font-family: "French Script MT", "serif";
+	font-size: 25px;
+	color: black;
+}
+#para-zone p a:hover{
+	color: white;
+}
 @media screen and (max-width: 650px){
 	#notif,#para,#deconnect,#ajout,#delete{
 		position: relative;
@@ -258,10 +306,20 @@ form{
 		width: 25%;
 		font-size: 15px;
 	}
+
 }
 @media screen and (max-width: 306px){
 	#notif,#para,#deconnect,#ajout,#delete{
 		width: 20px;
 		height: 20px;
+	}
+	#titre{
+		font-size: small;
+	}
+}
+@media screen and (max-height: 600){
+	#titre{
+		top: 0;
+		bottom: 15px;
 	}
 }

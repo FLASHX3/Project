@@ -19,15 +19,20 @@ function surligne(champ,erreur)
 function verif_name(nom)
 {
 	var erreur=document.getElementById('err_name');
-	var regex=/^[A-Z][a-z-ôâï ]{1,24}$/;
-	if(!regex.test(nom.value)){
-		a=false;
-		surligne(nom,true);
-		erreur.innerHTML="invalid name! capital letter in first letter";
-	}else{
-		a=true;
+	var regex=/^[A-Z][a-z -_éèôâêîïç]{1,24}$/;
+	if(nom.value==""){
 		surligne(nom,false);
 		erreur.innerHTML="";
+	}else{
+		if(!regex.test(nom.value)){
+			a=false;
+			surligne(nom,true);
+			erreur.innerHTML="invalid name! capital letter in first letter";
+		}else{
+			a=true;
+			surligne(nom,false);
+			erreur.innerHTML="";
+		}
 	}
 	return a;
 }
@@ -35,32 +40,43 @@ function verif_name(nom)
 function verif_user_name(pseudo)
 {
 	var erreur=document.getElementById('err_user_name');
-	var regex=/^[a-zA-Z@éèç0-9-._# ]{3,25}$/;
-	if(!regex.test(pseudo.value)){
-		b=false;
-		surligne(pseudo,true);
-		erreur.innerHTML="invalid user name!";
-	}else{
-		b=true;
+	var regex=/^[a-zA-Z0-9 -._çéèôâêîï@$#]{3,25}$/;
+	if(pseudo.value==""){
 		surligne(pseudo,false);
 		erreur.innerHTML="";
+	}else{
+		if(!regex.test(pseudo.value)){
+			b=false;
+			surligne(pseudo,true);
+			erreur.innerHTML="invalid user name!";
+		}else{
+			b=true;
+			surligne(pseudo,false);
+			erreur.innerHTML="";
+		}
 	}
 	return b;
 }
 
 function verif_school(school)
 {
+	//alert(school.options[school.selectedIndex].value);
 	var erreur=document.getElementById('err_school');
-	var regex=/^[A-Z][a-zA-Z-éèô ]{2,38}$/;
-	if(!regex.test(school.value))
-	{
-		c=false;
+	var regex=/^[A-Z][a-zA-Z-éèêôçï' ]{2,38}$/i;
+	if(school.options[school.selectedIndex].value==""){
 		surligne(school,true);
-		erreur.innerHTML="invalid school! capital letter in first letter";
+		erreur.innerHTML="Undefined school!";
 	}else{
-		c=true;
-		surligne(school,false);
-		erreur.innerHTML="";
+		if(!regex.test(school.options[school.selectedIndex].value))
+		{
+			c=false;
+			surligne(school,true);
+			erreur.innerHTML="invalid school! capital letter in first letter";
+		}else{
+			c=true;
+			surligne(school,false);
+			erreur.innerHTML="";
+		}
 	}
 	return c;
 }
@@ -68,14 +84,19 @@ function verif_school(school)
 function verif_age(age) {
 	var erreur=document.getElementById('err_age');
 	var regex=/^[0-9]{2}$/;
-	if(!regex.test(age.value)){
-		g=false;
-		surline(age,true);
-		erreur.innerHTML="invalid age!";
-	}else{
-		g=true;
+	if(age.value==""){
 		surligne(age,false);
 		erreur.innerHTML="";
+	}else{
+		if(!regex.test(age.value)){
+			g=false;
+			surligne(age,true);
+			erreur.innerHTML="invalid age!";
+		}else{
+			g=true;
+			surligne(age,false);
+			erreur.innerHTML="";
+		}
 	}
 	return g;
 }
@@ -83,18 +104,22 @@ function verif_age(age) {
 function verif_email(mail)
 {
 	var erreur=document.getElementById('err_email');
-	var regex=/^[a-zA-Z0-9.-_]{1,}@[a-z0-9.-_]{2,}\.[a-z]{2,4}$/;
-
-	if(!regex.test(mail.value))
-	{
-		d=false;
-		surligne(mail,true);
-		erreur.innerHTML="invalid email!";
-	}else{
+	var regex=/^[a-zA-Z0-9._-]{1,}@[a-z0-9._-]{2,}\.[a-z]{2,4}$/;
+	if(mail.value==""){
 		surligne(mail,false);
-		d=true;
 		erreur.innerHTML="";
-	}
+	}else{
+		if(!regex.test(mail.value))
+		{
+			d=false;
+			surligne(mail,true);
+			erreur.innerHTML="invalid email!";
+		}else{
+			surligne(mail,false);
+			d=true;
+			erreur.innerHTML="";
+		}
+	}	
 	return d;
 }
 
@@ -102,15 +127,20 @@ function verif_password(mdp)
 {
 	var erreur=document.getElementById('err_password');
 	var regex=/^[a-zA-Z0-9éèôâêîï.-_*@&$]{8}$/;
-	if(!regex.test(mdp.value))
-	{
-		e=false;
-		surligne(mdp,true);
-		erreur.innerHTML="8 charaters";
-	}else{
-		e=true;
+	if(mdp.value==""){
 		surligne(mdp,false);
 		erreur.innerHTML="";
+	}else{
+		if(!regex.test(mdp.value))
+		{
+			e=false;
+			surligne(mdp,true);
+			erreur.innerHTML="8 charaters! (éèôâêîï.-_*@&$) autorised";
+		}else{
+			e=true;
+			surligne(mdp,false);
+			erreur.innerHTML="";
+		}
 	}
 	return e;
 }
@@ -120,27 +150,32 @@ function verif_conf_pass(cmdp)
 	var erreur=document.getElementById('err_conf_password');
 	var test=verif_password(document.getElementById('password'));
 	var regex=/^[a-zA-Z0-9éèôâêîï.-_*@&$]{8}$/;
-	if(regex.test(cmdp.value)){
-		if(test){
-			if(cmdp.value==document.getElementById('password').value)
-			{
-				f=true;
-				surligne(cmdp,false);
-				erreur.innerHTML="";
+	if(cmdp.value==""){
+		surligne(cmdp,false);
+		erreur.innerHTML="";
+	}else{
+		if(regex.test(cmdp.value)){
+			if(test){
+				if(cmdp.value==document.getElementById('password').value)
+				{
+					f=true;
+					surligne(cmdp,false);
+					erreur.innerHTML="";
+				}else{
+					f=false;
+					surligne(cmdp,true);
+					erreur.innerHTML="Passwords are not identiques!";
+				}
 			}else{
 				f=false;
 				surligne(cmdp,true);
-				erreur.innerHTML="Passwords are not identiques!";
+				erreur.innerHTML="Please fill in the password field!";
 			}
 		}else{
 			f=false;
 			surligne(cmdp,true);
-			erreur.innerHTML="Please fill in the password field!";
+			erreur.innerHTML="letter, number,éèôâêîï.-_*@&$";
 		}
-	}else{
-		f=false;
-		surligne(cmdp,true);
-		erreur.innerHTML="letter, number,*_-.&@$éèôâêîï";
 	}
 	return f;
 }

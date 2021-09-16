@@ -37,7 +37,7 @@
 		return $name_doc;
 	}
 
-	if((isset($_POST['message']) AND !empty($_POST['message'])) AND (isset($_FILES['file']) AND $_FILES['file']['error']==0)){
+	if((isset($_POST['message']) AND !empty($_POST['message'])) AND (isset($_FILES['file']) AND !$_FILES['file']['error'])){
 		$name1=strip_tags($_POST['message']);
 		$name2=TraiteDoc();
 		$final_name=$name2.'<br>'.$name1;
@@ -51,7 +51,7 @@
 		$_POST['message']=strip_tags($_POST['message']);
 		EnvoiMessage($_POST['message']);
 	}
-	else if(isset($_FILES['file']) AND $_FILES['file']['error']==0){
+	else if(isset($_FILES['file']) AND !$_FILES['file']['error']){
 		$name=TraiteDoc();
 		if(move_uploaded_file($_FILES['file']['tmp_name'], '../Document/'.$name)){
 			EnvoiMessage($name);
