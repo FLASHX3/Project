@@ -55,9 +55,10 @@
 <?php
 }
 if(isset($_POST['loginUser']) AND isset($_POST['loginPassword'])){
+    require_once("../../../parametre.inc");
   try
     {
-        $connexion=new PDO("mysql:host=localhost;dbname=digital;charset=utf8",'root','FLASHX3*');
+        $connexion=new PDO("mysql:host=$serveur;dbname=$database1;charset=utf8",$user,$user_password);
         $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $connexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     }

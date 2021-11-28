@@ -1,9 +1,10 @@
 <?php
   if(!isset($_SESSION['id'])){
+    require_once("../../../parametre.inc");
 
     try
     {# connection à la base de donnée
-        $connexion=new PDO("mysql:host=localhost;dbname=digital;charset=utf8",'root','FLASHX3*');
+        $connexion=new PDO("mysql:host=$serveur;dbname=$database1;charset=utf8",$user,$user_password);
         $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $connexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     }
@@ -85,7 +86,7 @@
         <div class="buttton">
             <input type="submit" value="Submit" class="submit-btn">
             <input type="reset" value="Reset" class="reset-btn"><br>
-            <a href="../index.php" id="sign_in">sign in</a>
+            <a href="acc.php" id="sign_in">sign in</a>
         </div>
     </form>
   </div>

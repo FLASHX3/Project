@@ -37,9 +37,11 @@
 
         $mdp=sha1($mdp);  #on hache le mot de passe
 
+        require_once("../../../parametre.inc");
+
         try
         {# connection à la base de donnée
-            $connexion=new PDO("mysql:host=localhost;dbname=digital;charset=utf8",'root','FLASHX3*');
+            $connexion=new PDO("mysql:host=$serveur;dbname=database1;charset=utf8",$user,$user_password);
             $connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $connexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         }

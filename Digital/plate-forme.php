@@ -1,9 +1,10 @@
 <?php
 	session_start();
 	//header("refresh:30");
+	require_once("../../../parametre.inc");
 	if(isset($_SESSION['Id']) AND $_SESSION['Id']!=0 AND !empty($_SESSION['Id'])){
 		try{
-			$bdd= new PDO("mysql:host=localhost;dbname=digital;charset=utf8",'root','FLASHX3*');
+			$bdd= new PDO("mysql:host=$serveur;dbname=$database1;charset=utf8",$user,$user_password);
    			$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       		$bdd->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 		}
@@ -95,7 +96,7 @@
 		<header>
 			<div id="logo"><img src="../img/Logo_RSA.png"></div>
 			<a href="notification.php" title="notification"><button id="notif" ></button></a>
-			<a title="paramètre"><button id="para" onclick="toggleDisplay()"></button></a>
+			<a href="#" title="paramètre"><button id="para" onclick="toggleDisplay()"></button></a>
 			<a href="deconnection.php" title="se déconnecter"><button id="deconnect"></button></a>
 			<?php
 				if($_SESSION['Type_user']=="admin"){
@@ -142,7 +143,7 @@
 					<a href="plate-forme.php?school=<?php echo $resultat['Nom_établissement'];?>#derniermessage">
 						<div class="ecole" <?php if($_SESSION['ecole_visé']==$resultat['Nom_établissement']){echo 'id="select"';}?> title="<?php echo $resultat['Type_établissement'];?>">
 							<div class="pp"><img src="../img/ecole/<?php echo $resultat['Nom_établissement']; ?>.png" alt="erreur"></div>
-							<span class="notification">13</span>
+							<!--<span class="notification">13</span>-->
 							<p><?php echo $resultat['Nom_établissement'];?></p>
 						</div>
 					</a>

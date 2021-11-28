@@ -3,8 +3,10 @@
 
 	function EnvoiMessage($message)
 	{
+		require_once("../../../parametre.inc");
+		
 		try{
-			$bdd= new PDO("mysql:host=localhost;dbname=digital;charset=utf8",'root','FLASHX3*');
+			$bdd= new PDO("mysql:host=$serveur;dbname=$database1;charset=utf8",$user,$user_password);
 			$bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	      	$bdd->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 		}
@@ -22,13 +24,13 @@
 		if($_FILES['file']['size']<20971520){  //fichier inférieur à 20mo
 			$info_fichier=pathinfo($_FILES['file']['name']);
 			$extensionn_fichier=$info_fichier['extension'];
-			$extension_autorisees=array('jpg','jpeg','png','JPG','JPEG','PNG','pdf','PDF','doc','DOC','docx','DOCX','xls','XLS','xlsx','XLSX','ppt','PPT','pptx','PPTX','txt','TXT','zip','ZIP');
+			$extension_autorisees=array('jpg','jpeg','png','JPG','JPEG','PNG','pdf','PDF','doc','DOC','docx','DOCX','xls','XLS','xlsx','XLSX','ppt','PPT','pptx','PPTX','txt','TXT','zip','ZIP','rar','RAR','iso','ISO');
 
 			if(in_array($extensionn_fichier, $extension_autorisees)){
 				$name_doc=basename($_FILES['file']['name']);
 			}
 			else{
-				header('location: plate-forme.php?err_file=Only jpg,txt,jpeg,png,pdf,doc,docx,xls,xlsx,zip,ppt and pttx');
+				header('location: plate-forme.php?err_file=Only jpg,txt,jpeg,png,pdf,doc,docx,xls,xlsx,zip,rar,iso,ppt and pttx');
 			}
 		}
 		else{

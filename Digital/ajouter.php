@@ -1,11 +1,12 @@
 <?php
 	session_start();
+	require_once("../../../parametre.inc");
 	if(isset($_SESSION['Id']) AND $_SESSION['Id']!=0){
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title><?php if($_GET['a']==true){echo "Ajouter une école";}else{echo "Supprimer une école";} ?></title>
+	<title><?php if($_GET['a']=="true"){echo "Ajouter une école";}else{echo "Supprimer une école";} ?></title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
  	<meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -35,83 +36,81 @@
 				<span id="err_logo"><?php if(isset($_GET['err_logo'])){echo $_GET['err_logo'];}?></span>
 			</div>
 		</form>
-	<?php 
-		if(isset($_POST['établissement']) AND isset($_POST['type_établissement']) AND isset($_FILES['logo']) AND !$_FILES['logo']['error']){
+		<?php 
+			if(isset($_POST['établissement']) AND isset($_POST['type_établissement']) AND isset($_FILES['logo']) AND !$_FILES['logo']['error']){
 
-			$verifimage=getimagesize($_FILES['logo']['tmp_name']);
+				$verifimage=getimagesize($_FILES['logo']['tmp_name']);
 
-			if(!($verifimage && $verifimage[2]<4)){
-				unlink($_FILES['logo']['tmp_name']);
-				header('location : ajouter.php?a=true&err_logo=ce fichier ne contient pas d\'image');
-			}
+				if(!($verifimage && $verifimage[2]<4)){
+					unlink($_FILES['logo']['tmp_name']);
+					header('location : ajouter.php?a=true&err_logo=ce fichier ne contient pas d\'image');
+				}
 
-			$name=strip_tags($_POST['établissement']);
+				$name=strip_tags($_POST['établissement']);
 
-			if(!preg_match("#^[A-Z][a-zA-Z-éèêôçï' ]{2,38}$#i",$name)){
-				header('Location: ajouter.php?a=true&err_name=Invalid name of school!');
-			}
+				if(!preg_match("#^[A-Z][a-zA-Z-éèêôçï' ]{2,38}$#i",$name)){
+					header('Location: ajouter.php?a=true&err_name=Invalid name of school!');
+				}
 
-			try{
-				$bdd= new PDO("mysql:host=localhost;dbname=digital;charset=utf8",'root','FLASHX3*');
-				$bdd->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-				$bdd->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
+				try{
+					$bdd=new PDO("mysql:host=$serveur;dbname=$database1;charset=utf8",$user,$user_password);
+					$bdd->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+					$bdd->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
 
-				$verify=$bdd->prepare("SELECT Nom_établissement FROM `établissements` WHERE Nom_établissement=?");
-				$verify->execute(array($name));
-				$resultat=$verify->fetch();
-				$nb=$verify->rowCount();
+					$verify=$bdd->prepare("SELECT Nom_établissement FROM `établissements` WHERE Nom_établissement=?");
+					$verify->execute(array($name));
+					$resultat=$verify->fetch();
+					$nb=$verify->rowCount();
 
-				if($nb>0){
-					$verify->closeCursor();
-					header('location: ajouter.php?a=true&err_name=This school already exist!');
-				}else{
-					if($_FILES['logo']['size']<1048576){  //fichier inférieur à 1mo
-						$info_fichier=pathinfo($_FILES['logo']['name']);
-						$extensionn_fichier=$info_fichier['extension'];
-						$extension_autorisees=array('jpg','jpeg','png','JPG','JPEG','PNG');
+					if($nb>0){
+						$verify->closeCursor();
+						header('location: ajouter.php?a=true&err_name=This school already exist!');
+					}else{
+						if($_FILES['logo']['size']<1048576){  //fichier inférieur à 1mo
+							$info_fichier=pathinfo($_FILES['logo']['name']);
+							$extensionn_fichier=$info_fichier['extension'];
+							$extension_autorisees=array('jpg','jpeg','png','JPG','JPEG','PNG');
 
-						if(in_array($extensionn_fichier, $extension_autorisees)){
-							if(move_uploaded_file($_FILES['logo']['tmp_name'], '../img/ecole/'.$name.'.png')){
+							if(in_array($extensionn_fichier, $extension_autorisees)){
+								if(move_uploaded_file($_FILES['logo']['tmp_name'], '../img/ecole/'.$name.'.png')){
 
-								switch ($_POST['type_établissement']):
-									case 'Collège':
-									case 'Lycée':
-										$cursus="Secondary";
-										break;	
-									case 'Université':
-										$cursus="University";
-										break;		
-									default:
-										header('location: ajouter.php?a=true&err_logo=Type of school is not defined');
-										break;
-								endswitch;
+									switch ($_POST['type_établissement']):
+										case 'Collège':
+										case 'Lycée':
+											$cursus="Secondary";
+											break;	
+										case 'Université':
+											$cursus="University";
+											break;		
+										default:
+											header('location: ajouter.php?a=true&err_logo=Type of school is not defined');
+											break;
+									endswitch;
 
-								$req=$bdd->prepare("INSERT INTO établissements VALUES ('',?,?,?)");
-								$req->execute(array($name,$_POST['type_établissement'],$cursus));
-								$req->closeCursor();
+									$req=$bdd->prepare("INSERT INTO établissements VALUES ('',?,?,?)");
+									$req->execute(array($name,$_POST['type_établissement'],$cursus));
+									$req->closeCursor();
 
-								echo "<script type='text/javascript'>alert('$name has been added!');</script>";
-
-								echo "<script type='text/javascript'>alert('This file had been uploaded!');</script>";
+									echo "<script type='text/javascript'>alert('$name has been added!');</script>";
+								}else{
+									echo "<script type='text/javascript'>alert('Error of uploaded!');</script>";
+								}
 							}else{
-								echo "<script type='text/javascript'>alert('Error of uploaded!');</script>";
+								header('location: ajouter.php?a=true&err_logo=Only jpg,jpeg and png!');
 							}
 						}else{
-							header('location: ajouter.php?a=true&err_logo=Only jpg,jpeg and png!');
-						}
-					}else{
-						header('location: ajouter.php?a=true&err_logo=This file is too weighty!');
-					}	
+							header('location: ajouter.php?a=true&err_logo=This file is too weighty!');
+						}	
+					}
+				}
+				catch(PDOException $e){
+					die('ERREUR: '.$e->getMessage());
 				}
 			}
-			catch(PDOException $e){
-				die('ERREUR: '.$e->getMessage());
-			}
-		}
-	?>
-	<?php
-		}else if($_SESSION['Type_user']="admin" AND $_GET['a']=="false"){
-	?>
+		?>
+<?php
+	}else if($_SESSION['Type_user']="admin" AND $_GET['a']=="false"){
+?>
 			<h1 id="titre"><a href="plate-forme.php#derniermessage" class="closed" title="fermer">&times;</a>Supprimer une école<img src="../img/ecole.jpg" id="icone" alt="erreur"></h1>
 			<form id="delete" method="post" action="supprimer.php" name="form" onsubmit="return verif_choix();">
 				<?php if(isset($_GET['delete']) AND $_GET['delete']=="succes"){ ?>
@@ -120,7 +119,7 @@
 
 				<?php
 					try{
-						$bdd= new PDO("mysql:host=localhost;dbname=digital;charset=utf8",'root','FLASHX3*');
+						$bdd=new PDO("mysql:host=$serveur;dbname=$database1;charset=utf8",$user,$user_password);
 						$bdd->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 						$bdd->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
 
